@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.markssova.gamescatalog.R
-import com.github.markssova.gamescatalog.api.Game
+import com.github.markssova.gamescatalog.dao.GameEntity
 
-class CatalogAdapter : ListAdapter<Game, CatalogAdapter.GameViewHolder>(GameDiffCallback()) {
+class CatalogAdapter : ListAdapter<GameEntity, CatalogAdapter.GameViewHolder>(GameDiffCallback()) {
 
     class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val imageIcon: ImageView = view.findViewById(R.id.itemIcon)
@@ -20,7 +20,7 @@ class CatalogAdapter : ListAdapter<Game, CatalogAdapter.GameViewHolder>(GameDiff
         private val genreText: TextView = view.findViewById(R.id.itemGenreTextView)
         private val platformText: TextView = view.findViewById(R.id.itemPlatformTextView)
 
-        fun bind(game: Game) {
+        fun bind(game: GameEntity) {
             titleText.text = game.title
             genreText.text = game.genre
             platformText.text = game.platform
@@ -42,10 +42,10 @@ class CatalogAdapter : ListAdapter<Game, CatalogAdapter.GameViewHolder>(GameDiff
     }
 }
 
-class GameDiffCallback : DiffUtil.ItemCallback<Game>() {
-    override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean =
+class GameDiffCallback : DiffUtil.ItemCallback<GameEntity>() {
+    override fun areItemsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean =
         oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean =
+    override fun areContentsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean =
         oldItem == newItem
 }

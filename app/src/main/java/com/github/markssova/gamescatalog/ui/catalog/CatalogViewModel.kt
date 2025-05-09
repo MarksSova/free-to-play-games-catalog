@@ -1,47 +1,49 @@
 package com.github.markssova.gamescatalog.ui.catalog
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.markssova.gamescatalog.api.Game
 import com.github.markssova.gamescatalog.api.RetrofitClient
+import com.github.markssova.gamescatalog.dao.AppDatabase
+import com.github.markssova.gamescatalog.dao.GameEntity
+import com.github.markssova.gamescatalog.dao.toEntity
 import kotlinx.coroutines.launch
 
-class CatalogViewModel : ViewModel() {
+class CatalogViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _games = MutableLiveData<List<Game>>()
-    val games: LiveData<List<Game>> = _games
+    private val gameDao = AppDatabase.getInstance(application).gameDao()
+
+    private val _games = MutableLiveData<List<GameEntity>>()
+    val games: LiveData<List<GameEntity>> = _games
 
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
-
-    private var lastFetchTime: Long = 0L
-    private var cache: List<Game> = emptyList()
-
-    private val cacheDurationMillis = 10 * 60 * 1000L // 10 minutes
 
     init {
         fetchGames()
     }
 
     fun fetchGames(forceRefresh: Boolean = false) {
-        val currentTime = System.currentTimeMillis()
-        val isCacheValid = cache.isNotEmpty() && (currentTime - lastFetchTime < cacheDurationMillis)
-
-        if (!forceRefresh && isCacheValid) {
-            _games.value = cache
-            return
-        }
-
         viewModelScope.launch {
             try {
-                val result = RetrofitClient.freeToGameApiInstance.getGames().shuffled()
-                cache = result
-                lastFetchTime = currentTime
-                _games.value = result
+                if (!forceRefresh) {
+                    val cached = gameDao.getAllGames()
+                    if (cached.isNotEmpty()) {
+                        _games.value = cached.map { it }
+                        return@launch
+                    }
+                }
+
+                val remote = RetrofitClient.freeToGameApiInstance.getGames().shuffled()
+                gameDao.clearGames()
+                val gamesEntities = remote.map { it.toEntity() }
+                gameDao.insertGames(gamesEntities)
+                _games.value = gamesEntities
+
             } catch (e: Exception) {
-                _error.value = "Failed to load games: ${e.localizedMessage}"
+                _error.value = "Error: ${e.localizedMessage}"
             }
         }
     }
