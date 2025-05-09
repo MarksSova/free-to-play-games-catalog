@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">F2P Games Catalog</string>
+    <string name="title_catalog">Catalog</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="catalog_item_icon">Item icon</string>
+</resources>
