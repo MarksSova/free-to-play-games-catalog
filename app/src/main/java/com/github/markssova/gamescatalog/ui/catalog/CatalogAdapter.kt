@@ -10,17 +10,19 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.markssova.gamescatalog.R
-import com.github.markssova.gamescatalog.dao.GameEntity
+import com.github.markssova.gamescatalog.api.Game
 
-class CatalogAdapter : ListAdapter<GameEntity, CatalogAdapter.GameViewHolder>(GameDiffCallback()) {
+class CatalogAdapter(
+    private val onItemClick: (Game) -> Unit
+) : ListAdapter<Game, CatalogAdapter.GameViewHolder>(GameDiffCallback()) {
 
-    class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val imageIcon: ImageView = view.findViewById(R.id.itemIcon)
         private val titleText: TextView = view.findViewById(R.id.itemNameTextView)
         private val genreText: TextView = view.findViewById(R.id.itemGenreTextView)
         private val platformText: TextView = view.findViewById(R.id.itemPlatformTextView)
 
-        fun bind(game: GameEntity) {
+        fun bind(game: Game) {
             titleText.text = game.title
             genreText.text = game.genre
             platformText.text = game.platform
@@ -28,6 +30,10 @@ class CatalogAdapter : ListAdapter<GameEntity, CatalogAdapter.GameViewHolder>(Ga
             Glide.with(imageIcon.context)
                 .load(game.thumbnail)
                 .into(imageIcon)
+
+            itemView.setOnClickListener {
+                onItemClick(game)
+            }
         }
     }
 
@@ -42,10 +48,10 @@ class CatalogAdapter : ListAdapter<GameEntity, CatalogAdapter.GameViewHolder>(Ga
     }
 }
 
-class GameDiffCallback : DiffUtil.ItemCallback<GameEntity>() {
-    override fun areItemsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean =
+class GameDiffCallback : DiffUtil.ItemCallback<Game>() {
+    override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean =
         oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean =
+    override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean =
         oldItem == newItem
 }

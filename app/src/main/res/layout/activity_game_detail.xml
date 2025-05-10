@@ -1,0 +1,89 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/gameThumbnailView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/gameTitleView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="@string/game_title" />
+
+            <ImageView
+                android:id="@+id/gameFavoriteIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="4dp"
+                android:src="@drawable/ic_star_border_24dp"
+                android:contentDescription="@string/favorite_icon" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/gameDescriptionView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:textColor="#444444"
+            android:text="@string/short_description" />
+
+        <TextView
+            android:id="@+id/gameGenreView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/genre_text" />
+
+        <TextView
+            android:id="@+id/gamePlatformView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/platform_text" />
+
+        <TextView
+            android:id="@+id/gamePublisherView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/publisher_text" />
+
+        <TextView
+            android:id="@+id/gameDeveloperView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/developer_text" />
+
+        <TextView
+            android:id="@+id/gameReleaseDateView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/release_date_text" />
+
+        <TextView
+            android:id="@+id/gameProfileUrlView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:text="@string/profile_url_text" />
+    </LinearLayout>
+</ScrollView>

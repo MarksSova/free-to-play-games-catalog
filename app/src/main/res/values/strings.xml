@@ -3,4 +3,13 @@
     <string name="title_catalog">Catalog</string>
     <string name="title_favorites">Favorites</string>
     <string name="catalog_item_icon">Item icon</string>
+    <string name="favorite_icon">Favorite</string>
+    <string name="game_title">Game Title</string>
+    <string name="short_description">Short Description</string>
+    <string name="genre_text">Genre: %1$s</string>
+    <string name="platform_text">Platform: %1$s</string>
+    <string name="publisher_text">Publisher: %1$s</string>
+    <string name="developer_text">Developer: %1$s</string>
+    <string name="release_date_text">Release Date: %1$s</string>
+    <string name="profile_url_text">Profile URL: %1$s</string>
 </resources>

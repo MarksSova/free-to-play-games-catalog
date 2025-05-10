@@ -2,7 +2,6 @@ package com.github.markssova.gamescatalog.api
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import retrofit2.http.GET
-import java.util.Date
 
 interface FreeToGameApi {
     @GET("games")
@@ -22,8 +21,9 @@ data class Game(
     val publisher: String,
     val developer: String,
     @JsonProperty("release_date")
-    val releaseDate: Date,
+    val releaseDate: String,
     @JsonProperty("freetogame_profile_url")
-    val freeToGameProfileUrl: String
+    val freeToGameProfileUrl: String,
+    val isFavorite: Boolean = false
 )
 

@@ -1,5 +1,6 @@
 package com.github.markssova.gamescatalog.ui.catalog
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.markssova.gamescatalog.databinding.FragmentCatalogBinding
+import com.github.markssova.gamescatalog.ui.details.GameDetailActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CatalogFragment : Fragment() {
@@ -33,7 +35,11 @@ class CatalogFragment : Fragment() {
 
         catalogRecyclerView = binding.catalogRecyclerView
         catalogRecyclerView.layoutManager = LinearLayoutManager(context)
-        catalogAdapter = CatalogAdapter()
+        catalogAdapter = CatalogAdapter { game ->
+            val intent = Intent(requireContext(), GameDetailActivity::class.java)
+            intent.putExtra("gameId", game.id)
+            startActivity(intent)
+        }
         catalogRecyclerView.adapter = catalogAdapter
 
         catalogViewModel.games.observe(viewLifecycleOwner) { catalogItems ->
@@ -55,24 +61,3 @@ class CatalogFragment : Fragment() {
         _binding = null
     }
 }
-
-//class CatalogFragment : Fragment() {
-//
-//    private val viewModel: CatalogViewModel by viewModels()
-//    private lateinit var adapter: CatalogAdapter
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        adapter = CatalogAdapter()
-//        val recyclerView = view.findViewById<RecyclerView>(R.id.catalogRecyclerView)
-//        recyclerView.adapter = adapter
-//        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-//
-//        viewModel.games.observe(viewLifecycleOwner) { games ->
-//            adapter.submitList(games)
-//        }
-//
-//        viewModel.error.observe(viewLifecycleOwner) {
-//            it?.let { msg -> Toast.makeText(context, msg, Toast.LENGTH_SHORT).show() }
-//        }
-//    }
-//}
