@@ -15,9 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CatalogFragment : Fragment() {
 
-    private var _binding: FragmentCatalogBinding? = null
-    private val binding get() = _binding!!
-
+    private lateinit var binding: FragmentCatalogBinding
     private lateinit var catalogRecyclerView: RecyclerView
     private lateinit var catalogAdapter: CatalogAdapter
     private lateinit var catalogViewModel: CatalogViewModel
@@ -27,7 +25,7 @@ class CatalogFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCatalogBinding.inflate(inflater, container, false)
+        binding = FragmentCatalogBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         catalogViewModel =
@@ -54,10 +52,5 @@ class CatalogFragment : Fragment() {
 
     private fun refreshCatalog() {
         catalogViewModel.fetchGames(true)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

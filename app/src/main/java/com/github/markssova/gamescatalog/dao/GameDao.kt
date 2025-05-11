@@ -7,28 +7,27 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
-import androidx.room.Update
 import com.github.markssova.gamescatalog.api.Game
 
 @Dao
 interface GameDao {
     @Query("SELECT * FROM games")
-    suspend fun getAllGames(): List<GameEntity>
+    fun getAllGames(): LiveData<List<GameEntity>>
+
+    @Query("SELECT * FROM games WHERE isFavorite = 1")
+    fun getFavoriteGames(): LiveData<List<GameEntity>>
+
+    @Query("SELECT * FROM games WHERE id = :id")
+    fun getGameById(id: Int): LiveData<GameEntity?>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM games)")
+    suspend fun hasAnyGames(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGames(games: List<GameEntity>)
 
     @Query("UPDATE games SET isFavorite = :isFavorite WHERE id = :gameId")
     suspend fun updateFavoriteStatus(gameId: Int, isFavorite: Boolean)
-
-    @Update
-    suspend fun update(game: GameEntity)
-
-    @Query("SELECT * FROM games WHERE id = :id")
-    fun getGameById(id: Int): LiveData<GameEntity?>
-
-    @Query("SELECT * FROM games WHERE id = :id")
-    suspend fun getGameByIdSuspend(id: Int): GameEntity?
 
     @Query("DELETE FROM games")
     suspend fun clearGames()
